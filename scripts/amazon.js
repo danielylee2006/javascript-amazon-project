@@ -1,5 +1,7 @@
-import {cart} from '../data/cart.js'; // '../' because cart.js is in different folder
-import {products} from '../data/products.js';
+import {cart, addToCart} from "../data/cart.js"; // '../' because cart.js is in different folder
+import { products } from "../data/products.js";
+import { formatCurrency } from "./utils/money.js";
+
 
 let productsHTML = "";
 
@@ -24,7 +26,7 @@ products.forEach((product) => {
           </div>
 
           <div class="product-price">
-            $${(product.priceCents / 100).toFixed(2)}
+            $${formatCurrency(product.priceCents)}
           </div>
 
           <div class="product-quantity-container">
@@ -58,40 +60,28 @@ products.forEach((product) => {
 });
 
 document.querySelector(".js-products-grid").innerHTML = productsHTML;
+
+function updateCartQuantity() {
+  let cartQuantity = 0;
+  cart.forEach((item) => {
+    cartQuantity += item.quantity;
+  });
+
+  document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
+}
+
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
     const productId = button.dataset.productId;
-
-    //checking if the product is already in the cart
-
-    let matchingItem;
-
-    cart.forEach((item) => {
-      if (productId === item.productId) {
-        matchingItem = item;
-      }
-    });
-
-    if (matchingItem) {
-      //if matching item exists -> simply increase quantity
-      matchingItem.quantity++;
-    } else {
-      cart.push({
-        productId: productId,
-        quantity: 1,
-      });
-    }
-
-    let cartQuantity = 0;
-    cart.forEach((item) => {
-      cartQuantity += item.quantity;
-    });
-
-    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+    addToCart(productId); //adds product to cart list.
+    updateCartQuantity();
 
   });
 });
 
+//lemme see cart
+
+console.log(cart)
 
 //Kebab case --> data-user-id
 //Camel case --> dataset.userId
