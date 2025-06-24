@@ -1,3 +1,6 @@
+import {cart} from '../data/cart.js'; // '../' because cart.js is in different folder
+import {products} from '../data/products.js';
+
 let productsHTML = "";
 
 products.forEach((product) => {
