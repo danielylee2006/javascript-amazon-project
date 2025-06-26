@@ -61,6 +61,8 @@ products.forEach((product) => {
 
 document.querySelector(".js-products-grid").innerHTML = productsHTML;
 
+updateCartQuantity(); //update the cart-quantity display to display the cart count from local storage.
+
 function updateCartQuantity() {
   let cartQuantity = 0;
   cart.forEach((item) => {
