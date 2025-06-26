@@ -1,24 +1,6 @@
 //get saved data from local storage. Convert the JSON string to list and save in cart.
 export let cart = JSON.parse(localStorage.getItem("cart"));
 
-if (!cart) {
-  //give cart default items if its empty
-  cart = [
-    {
-      productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
-      quantity: 1,
-      deliveryOptionId: "1",
-    },
-
-    {
-      productId: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
-      quantity: 1,
-      deliveryOptionId: "2",
-    },
-  ];
-  saveToLocalStorage();
-}
-
 /*
 To avoid naming conflicts, the cart.js was removed from <script>
 However, we still want to have access to it, so we EXPORT it.
@@ -26,7 +8,8 @@ However, we still want to have access to it, so we EXPORT it.
 
 /*
 Because we use the cart module in the amazon.js file we import it 
-within that file. 
+within that file.  
+
 */
 
 //MODULES ONLY WORK IN LIVE SERVERS!

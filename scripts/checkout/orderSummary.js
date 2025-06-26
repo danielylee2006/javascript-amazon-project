@@ -1,8 +1,12 @@
 import { cart, removeFromCart, updateDeliveryOption } from "../../data/cart.js";
-import { products } from "../../data/products.js";
+import { getProduct } from "../../data/products.js";
 import formatCurrency from "../utils/money.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
-import { deliveryOptions } from "../../data/deliveryOptions.js";
+import {
+  deliveryOptions,
+  getDeliveryOption,
+} from "../../data/deliveryOptions.js";
+import {renderPaymentSummary} from './paymentSummary.js';
 
 /*
 In order to update the order summary each section, we put all of out code
@@ -10,26 +14,24 @@ for rendering the order summary into a function so every time a user updates
 the order summary (e.g. selecting new delivery option), then we run the function 
 after the update code.
 */
+
 export function renderOrderSummary() {
   let cartSummaryHTML = "";
 
   //generating html
   cart.forEach((cartItem) => {
-    const { productId, quantity } = cartItem;
+    const { productId, quantity, deliveryOptionId } = cartItem;
 
-    let matchingProduct;
+    //get product that matches the item in cart to get product details.
+    const matchingProduct = getProduct(productId);
+    const deliveryOption = getDeliveryOption(deliveryOptionId);
 
-    //find a matching product in the cart in the product.js database
-    products.forEach((product) => {
-      if (product.id === productId) {
-        matchingProduct = product;
-      }
-    });
+
 
     cartSummaryHTML += `<div class="cart-item-container js-cart-item-container-${productId}">
             <div class="delivery-date">
               Delivery Date: ${dayjs()
-                .add(cartItem.deliveryOptionId, "days")
+                .add(deliveryOption.deliveryDays, "days")
                 .format("dddd, MMMM D")}
             </div>
 
@@ -62,7 +64,7 @@ export function renderOrderSummary() {
                 <div class="delivery-options-title">
                   Choose a delivery option:
                 </div>
-                ${deliveryOptionHTML(productId, cartItem)}
+                ${deliveryOptionHTML(productId, deliveryOption)}
               </div>
             </div>
           </div>`;
@@ -71,16 +73,11 @@ export function renderOrderSummary() {
   document.querySelector(".js-order-summary").innerHTML = cartSummaryHTML;
 
   //auto generate the delivery option html
-  function deliveryOptionHTML(productId, cartItem) {
+  function deliveryOptionHTML(productId, deliveryOption) {
     let html = "";
 
     deliveryOptions.forEach((option) => {
-      /*
-    const today = dayjs();
-    const deliveryDate = today.add(option.deliveryDays, "days");
-    const dateString = deliveryDate.format("dddd, MMMM D");
-    */
-      const dateString = dayjs().add(option.id, "days").format("dddd, MMMM D");
+      const dateString = dayjs().add(option.deliveryDays, "days").format("dddd, MMMM D");
 
       //ternary operator: condition ? ExpressionIfTrue : ExpressionIfFalse
       const priceString =
@@ -88,7 +85,7 @@ export function renderOrderSummary() {
           ? "FREE"
           : `$${formatCurrency(option.priceCents)} - `;
 
-      const isChecked = option.id === cartItem.deliveryOptionId;
+      const isChecked = option.id === deliveryOption.id;
 
       //If isChecked is true = give checked status to that option
       //If isChecked is false = give '' meaning no checked status.
@@ -124,6 +121,9 @@ export function renderOrderSummary() {
         `.js-cart-item-container-${productId}`
       ); //accessing each items container through unique id
       container.remove();
+
+      //updating the paymentSummary
+      renderPaymentSummary();
     });
   });
 
@@ -133,7 +133,7 @@ export function renderOrderSummary() {
       const { productId, deliveryOptionId } = element.dataset;
       updateDeliveryOption(productId, deliveryOptionId);
       renderOrderSummary(); //after update, render new html.
+      renderPaymentSummary();
     });
   });
 }
-
