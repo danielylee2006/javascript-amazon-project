@@ -1,4 +1,4 @@
-import {formatCurrency} from '../scripts/utils/money.js';
+import {formatCurrency} from '../../scripts/utils/money.js';
 
 describe('test suite: formatCurrency', () => {
     it('convert cents into dollars', () => {
@@ -13,3 +13,7 @@ describe('test suite: formatCurrency', () => {
         expect(formatCurrency(2000.5)).toEqual('20.01');
     });
 });
+
+//describe --> creates test suite (group of related tests)
+//it --> individual test case
+//expect --> creates the test logic, comparison. 
