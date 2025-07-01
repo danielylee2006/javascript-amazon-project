@@ -1,7 +1,8 @@
+import {formatCurrency} from '../scripts/utils/money.js';
+
 //this function identifies product by matching the productId
 //of the Item in the cart with the productId's of the products in the db
 export function getProduct(productId) {
-
   let matchingProduct;
 
   products.forEach((product) => {
@@ -11,7 +12,30 @@ export function getProduct(productId) {
   });
 
   return matchingProduct;
-  
+}
+
+class Product {
+  id;
+  image;
+  name;
+  rating;
+  priceCents;
+
+  constructor(productDetails) { //pass in an object as param to access details
+    this.id = productDetails.id;
+    this.image = productDetails.image;
+    this.name = productDetails.name;
+    this.rating = productDetails.rating; //this is object containing (stars, count)
+    this.priceCents = productDetails.priceCents;
+  }
+
+  getStarsUrl() {
+    return `images/ratings/rating-${this.rating.stars * 10}.png`
+  }
+
+  getPrice() {
+    return `$${formatCurrency(this.priceCents)}`
+  }
 }
 
 export const products = [
@@ -485,4 +509,7 @@ export const products = [
     priceCents: 2400,
     keywords: ["sweaters", "hoodies", "apparel", "mens"],
   },
-];
+].map((productDetails) => {
+  return new Product(productDetails);
+});
+//now products is a list of Product() objects

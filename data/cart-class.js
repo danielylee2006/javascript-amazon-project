@@ -1,16 +1,16 @@
 class Cart {
-    
+
   cartItems;
-  localStorageKey;
+  #localStorageKey; //hash gives private property
 
   constructor(localStorageKey) { //set up code
-    this.localStorageKey = localStorageKey;
-    this.loadFromStorage();
+    this.#localStorageKey = localStorageKey;
+    this.#loadFromStorage();
   }
 
-  loadFromStorage() {
+  #loadFromStorage() { //private method
     this.cartItems =
-      JSON.parse(localStorage.getItem(this.localStorageKey)) || [];
+      JSON.parse(localStorage.getItem(this.#localStorageKey)) || [];
   }
   saveToLocalStorage() {
     localStorage.setItem(this.localStorageKey, JSON.stringify(this.cartItems));
