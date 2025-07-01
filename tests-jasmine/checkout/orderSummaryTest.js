@@ -7,8 +7,7 @@ describe("Test Suite: renderOrderSummary", () => {
   const productId2 = "15b6fc6f-327a-4ec4-896f-486349e85a3d";
 
   beforeEach(() => { //this is the setup code BEFORE EACH test -> AKA HOOKS
-    
-
+  
     /*
     To test renderOrderSummary()'s ability to display the cart, we create our own
     div element on our test page to see the output. Because the output code for 
