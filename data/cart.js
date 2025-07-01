@@ -1,5 +1,6 @@
 //get saved data from local storage. Convert the JSON string to list and save in cart.
-export let cart = JSON.parse(localStorage.getItem("cart")) || [];
+export let cart;
+loadFromStorage();
 
 /*
 To avoid naming conflicts, the cart.js was removed from <script>
@@ -13,6 +14,10 @@ within that file.
 */
 
 //MODULES ONLY WORK IN LIVE SERVERS!
+
+export function loadFromStorage() {
+  cart = JSON.parse(localStorage.getItem("cart")) || [];
+}
 
 
 //EVERY TIME WE MAKES CHANGES TO CART CALL THIS FUNCTION!
