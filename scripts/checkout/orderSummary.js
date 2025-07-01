@@ -6,7 +6,7 @@ import {
   deliveryOptions,
   getDeliveryOption,
 } from "../../data/deliveryOptions.js";
-import {renderPaymentSummary} from './paymentSummary.js';
+import { renderPaymentSummary } from "./paymentSummary.js";
 
 /*
 In order to update the order summary each section, we put all of out code
@@ -26,9 +26,8 @@ export function renderOrderSummary() {
     const matchingProduct = getProduct(productId);
     const deliveryOption = getDeliveryOption(deliveryOptionId);
 
-
-
-    cartSummaryHTML += `<div class="cart-item-container js-cart-item-container-${productId}">
+    cartSummaryHTML += `<div class="cart-item-container js-cart-item-container
+     js-cart-item-container-${productId}">
             <div class="delivery-date">
               Delivery Date: ${dayjs()
                 .add(deliveryOption.deliveryDays, "days")
@@ -46,7 +45,7 @@ export function renderOrderSummary() {
                 <div class="product-price">
                   $${formatCurrency(matchingProduct.priceCents)}
                 </div>
-                <div class="product-quantity">
+                <div class="product-quantity js-product-quantity-${productId}">
                   <span>
                     Quantity: <span class="quantity-label">${quantity}</span>
                   </span>
@@ -54,7 +53,7 @@ export function renderOrderSummary() {
                     Update
                   </span>
                   <span class="delete-quantity-link link-primary
-                   js-delete-link" data-product-id="${productId}">
+                   js-delete-link js-delete-link-${productId}" data-product-id="${productId}">
                     Delete
                   </span>
                 </div>
@@ -77,7 +76,9 @@ export function renderOrderSummary() {
     let html = "";
 
     deliveryOptions.forEach((option) => {
-      const dateString = dayjs().add(option.deliveryDays, "days").format("dddd, MMMM D");
+      const dateString = dayjs()
+        .add(option.deliveryDays, "days")
+        .format("dddd, MMMM D");
 
       //ternary operator: condition ? ExpressionIfTrue : ExpressionIfFalse
       const priceString =

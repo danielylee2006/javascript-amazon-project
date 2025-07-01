@@ -81,5 +81,5 @@ export function renderPaymentSummary() {
 
   console.log(productPriceCents);
 
-  document.querySelector(".js-payment-summary").innerHTML = paymentSummaryHTML;
+  document.querySelector('.js-payment-summary').innerHTML = paymentSummaryHTML;
 }
