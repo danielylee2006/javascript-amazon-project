@@ -1,12 +1,14 @@
-import {cart, addToCart} from "../data/cart.js"; // '../' because cart.js is in different folder
-import { products } from "../data/products.js";
+import { cart, addToCart } from "../data/cart.js"; // '../' because cart.js is in different folder
+import { products, loadProducts } from "../data/products.js";
 import formatCurrency from "./utils/money.js";
 
+loadProducts(renderProductsGrid);
 
-let productsHTML = "";
+function renderProductsGrid() {
+  let productsHTML = "";
 
-products.forEach((product) => {
-  productsHTML += `
+  products.forEach((product) => {
+    productsHTML += `
         <div class="product-container">
           <div class="product-image-container">
             <img class="product-image"
@@ -44,7 +46,7 @@ products.forEach((product) => {
             </select>
           </div>
 
-          ${product.extraInfoHTML()} //polymorphism
+          ${product.extraInfoHTML()} <!--Polymorphism-->
 
           <div class="product-spacer"></div>
 
@@ -59,31 +61,31 @@ products.forEach((product) => {
             Add to Cart
           </button>
         </div>`;
-});
-
-document.querySelector(".js-products-grid").innerHTML = productsHTML;
-
-updateCartQuantity(); //update the cart-quantity display to display the cart count from local storage.
-
-function updateCartQuantity() {
-  let cartQuantity = 0;
-  cart.forEach((item) => {
-    cartQuantity += item.quantity;
   });
 
-  //update the html for cartQuantity (amazon.html)
-  document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
+  document.querySelector(".js-products-grid").innerHTML = productsHTML;
+
+  updateCartQuantity(); //update the cart-quantity display to display the cart count from local storage.
+
+  function updateCartQuantity() {
+    let cartQuantity = 0;
+    cart.forEach((item) => {
+      cartQuantity += item.quantity;
+    });
+
+    //update the html for cartQuantity (amazon.html)
+    document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
+  }
+
+  //click event for add-to-cart button
+  document.querySelectorAll(".js-add-to-cart").forEach((button) => {
+    button.addEventListener("click", () => {
+      const productId = button.dataset.productId;
+      addToCart(productId); //adds product to cart list.
+      updateCartQuantity(); //self explanatory
+    });
+  });
 }
-
-//click event for add-to-cart button
-document.querySelectorAll(".js-add-to-cart").forEach((button) => {
-  button.addEventListener("click", () => {
-    const productId = button.dataset.productId;
-    addToCart(productId); //adds product to cart list.
-    updateCartQuantity(); //self explanatory
-  });
-});
-
 
 //Kebab case --> data-user-id
 //Camel case --> dataset.userId
