@@ -82,3 +82,16 @@ export function updateDeliveryOption(productId, deliveryOptionId) {
   saveToLocalStorage();
 
 }
+
+export function loadCart(renderProductsGrid) {  //load the products JSON from backend via http 'GET' request
+  const xhr = new XMLHttpRequest(); //create request Object
+
+  xhr.addEventListener("load", () => {
+
+    console.log(xhr.response);
+    renderProductsGrid(); //we can render the products only after the xhr reponse is loaded.
+  });
+
+  xhr.open("GET", "https://supersimplebackend.dev/cart");
+  xhr.send();
+}

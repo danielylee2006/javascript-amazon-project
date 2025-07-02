@@ -61,9 +61,8 @@ class Clothing extends Product {
 
 export let products = [];
 
-export function loadProducts(renderProductsGrid) {
-  //load the products JSON from backend via http 'GET' request
-  const xhr = new XMLHttpRequest();
+export function loadProducts(renderProductsGrid) {  //load the products JSON from backend via http 'GET' request
+  const xhr = new XMLHttpRequest(); //create request Object
 
   xhr.addEventListener("load", () => {
     products = JSON.parse(xhr.response).map((productDetails) => {
