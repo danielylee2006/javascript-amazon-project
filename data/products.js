@@ -79,4 +79,4 @@ export function loadProducts(renderProductsGrid) {
   xhr.send();
 }
 
-loadProducts();
+
