@@ -13,6 +13,7 @@ import { cart } from "../../data/cart.js";
 import { getProduct } from "../../data/products.js";
 import { getDeliveryOption } from "../../data/deliveryOptions.js";
 import { formatCurrency } from "../utils/money.js";
+import { addOrder } from "../../data/orders.js";
 
 export function renderPaymentSummary() {
   //get the total cost of items (before shipping or tax)
@@ -20,13 +21,11 @@ export function renderPaymentSummary() {
   let shippingPriceCents = 0;
 
   cart.forEach((item) => {
-    
     const product = getProduct(item.productId);
     productPriceCents += product.priceCents * item.quantity;
 
     const deliveryOption = getDeliveryOption(item.deliveryOptionId);
     shippingPriceCents += deliveryOption.priceCents;
-
   });
 
   const totalBeforeTaxCents = productPriceCents + shippingPriceCents;
@@ -74,12 +73,37 @@ export function renderPaymentSummary() {
             )}</div>
         </div>
 
-        <button class="place-order-button button-primary">
+        <button class="place-order-button button-primary js-place-order">
             Place your order
         </button>
     `;
 
   console.log(productPriceCents);
 
-  document.querySelector('.js-payment-summary').innerHTML = paymentSummaryHTML;
+  document.querySelector(".js-payment-summary").innerHTML = paymentSummaryHTML;
+
+  //we send cart array to backend and backend sends back an order object
+  document
+    .querySelector(".js-place-order")
+    .addEventListener("click", async () => {
+      try { //possible error in POST request or URL 
+        const response = await fetch("https://supersimplebackend.dev/orders", {
+          method: "POST", //POST request
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cart: cart }),
+        });
+        const order = await response.json();
+        addOrder(order);
+      } catch (error) {
+        console.log('unexpected error');
+      }
+
+      /*
+      We can access the window's url and change it. 
+      When we click the order button it should take you to the orders page
+      So we change the current webpage reference to order.html page
+      */
+      window.location.href = 'orders.html'
+
+    });
 }
