@@ -74,6 +74,8 @@ export function loadProductsFetch() {
         }
         return new Product(productDetails);
       });
+    }).catch((error) => {
+      //error message
     });
 
     return promise; //fetch() returns a promise
@@ -93,6 +95,11 @@ export function loadProducts(renderProductsGrid) {
       return new Product(productDetails);
     });
     renderProductsGrid(); //we can render the products only after the xhr reponse is loaded.
+  });
+
+  //event listener for catching errors
+  xhr.addEventListener('error', (error) => {
+    //error message.
   });
 
   xhr.open("GET", "https://supersimplebackend.dev/products");

@@ -8,19 +8,26 @@ import { loadCart } from "../data/cart.js";
 async function loadPage() {
   //async keyword makes function return a promise
 
-  await loadProductsFetch(); //makes code wait for async function to finish.
-
   /*
   await can only be used if function returns promise. 
   Although loadCart() is an async function, it does not return 
   a promise. So we wrap it with a promise and add await.
   */
-  
-  const variable = await new Promise((resolve) => {
-    loadCart(() => {
-      resolve('value'); // 'value' gets saved in variable
+
+  //throw 'error';
+
+  try {
+    await loadProductsFetch(); //makes code wait for async function to finish.
+
+    const variable = await new Promise((resolve, reject) => {
+      loadCart(() => {
+        //reject('error');
+        resolve("value"); // 'value' gets saved in variable
+      });
     });
-  });
+  } catch (error) {
+    console.log("error!");
+  }
 
   renderOrderSummary();
   renderPaymentSummary();
@@ -28,7 +35,6 @@ async function loadPage() {
   return "value"; // equivalent to resolve('value')
 }
 loadPage();
-
 
 /* NONE ASYNC AWAIT APPROACH USING ONLY PROMISES!!!!
 
@@ -51,5 +57,3 @@ Promise.all([
 Promise is used for more efficient call backs. Multiple call backs lead to nesting
 of functions. But with an Promise Object, we can use .then() for easier call back managment. 
 */
-
-
