@@ -1,4 +1,4 @@
-import { cart, addToCart } from "../data/cart.js"; // '../' because cart.js is in different folder
+import { cart, addToCart, updateCartQuantity } from "../data/cart.js"; // '../' because cart.js is in different folder
 import { products, loadProducts } from "../data/products.js";
 import formatCurrency from "./utils/money.js";
 
@@ -66,16 +66,6 @@ export function renderProductsGrid() {
   document.querySelector(".js-products-grid").innerHTML = productsHTML;
 
   updateCartQuantity(); //update the cart-quantity display to display the cart count from local storage.
-
-  function updateCartQuantity() {
-    let cartQuantity = 0;
-    cart.forEach((item) => {
-      cartQuantity += item.quantity;
-    });
-
-    //update the html for cartQuantity (amazon.html)
-    document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
-  }
 
   //click event for add-to-cart button
   document.querySelectorAll(".js-add-to-cart").forEach((button) => {

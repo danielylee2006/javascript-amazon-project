@@ -5,7 +5,7 @@ import { loadCart } from "../data/cart.js";
 //import '../data/cart-class.js';
 //import '../data/backend.js';
 
-async function loadPage() {
+async function loadCheckoutPage() {
   //async keyword makes function return a promise
 
   /*
@@ -34,7 +34,7 @@ async function loadPage() {
 
   return "value"; // equivalent to resolve('value')
 }
-loadPage();
+loadCheckoutPage();
 
 /* NONE ASYNC AWAIT APPROACH USING ONLY PROMISES!!!!
 

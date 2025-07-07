@@ -81,8 +81,6 @@ export function loadProductsFetch() {
     return promise; //fetch() returns a promise
 }
 
-
-
 export function loadProducts(renderProductsGrid) {
   //load the products JSON from backend via http 'GET' request
   const xhr = new XMLHttpRequest(); //create request Object

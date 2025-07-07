@@ -9,7 +9,7 @@ MVC (Model --> View --> Controller)
    (e.g) saving all the view and controller elements to recreate the html and 
    also make it able to use the interactive elements again after recreation. 
 */
-import { cart } from "../../data/cart.js";
+import { cart, emptyCart, updateCartQuantity } from "../../data/cart.js";
 import { getProduct } from "../../data/products.js";
 import { getDeliveryOption } from "../../data/deliveryOptions.js";
 import { formatCurrency } from "../utils/money.js";
@@ -78,15 +78,14 @@ export function renderPaymentSummary() {
         </button>
     `;
 
-  console.log(productPriceCents);
-
   document.querySelector(".js-payment-summary").innerHTML = paymentSummaryHTML;
 
   //we send cart array to backend and backend sends back an order object
   document
     .querySelector(".js-place-order")
     .addEventListener("click", async () => {
-      try { //possible error in POST request or URL 
+      try {
+        //possible error in POST request or URL
         const response = await fetch("https://supersimplebackend.dev/orders", {
           method: "POST", //POST request
           headers: { "Content-Type": "application/json" },
@@ -95,15 +94,17 @@ export function renderPaymentSummary() {
         const order = await response.json();
         addOrder(order);
       } catch (error) {
-        console.log('unexpected error');
+        console.log("unexpected error");
       }
+      //when order is placed -> empty the cart and save to localStorage
+      emptyCart();
 
       /*
       We can access the window's url and change it. 
       When we click the order button it should take you to the orders page
       So we change the current webpage reference to order.html page
       */
-      window.location.href = 'orders.html'
+      window.location.href = "orders.html";
 
     });
 }

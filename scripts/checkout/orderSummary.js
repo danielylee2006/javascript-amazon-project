@@ -139,9 +139,12 @@ export function renderOrderSummary() {
   });
 }
 
+
+/*
 documnent.querySelectorAll('.js-update-link').forEach((link) => {
   link.addEventListener('click', () => {
     const productId = link.dataset.productId;
 
   })
 });
+*/

@@ -19,11 +19,15 @@ export function loadFromStorage() {
   cart = JSON.parse(localStorage.getItem("cart")) || [];
 }
 
-
 //EVERY TIME WE MAKES CHANGES TO CART CALL THIS FUNCTION!
 function saveToLocalStorage() {
   //converting cart[] to JSON string and store in local storage as key: 'cart'
   localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+export function emptyCart() {
+  cart = [];
+  saveToLocalStorage();
 }
 
 export function addToCart(productId, quantity) {
@@ -42,7 +46,7 @@ export function addToCart(productId, quantity) {
   } else {
     cart.push({
       productId: productId,
-      quantity: quantity, 
+      quantity: quantity,
       deliveryOptionId: "1", //default delivery option
     });
   }
@@ -65,8 +69,17 @@ export function removeFromCart(productId) {
   saveToLocalStorage(); //after every update we need to save it local storage
 }
 
-export function updateDeliveryOption(productId, deliveryOptionId) {
+export function updateCartQuantity() {
+  let cartQuantity = 0;
+  cart.forEach((item) => {
+    cartQuantity += item.quantity;
+  });
 
+  //update the html for cartQuantity (amazon.html)
+  document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
+}
+
+export function updateDeliveryOption(productId, deliveryOptionId) {
   let matchingItem;
 
   //loop through the cart and the find the product we want to update the DelOP
@@ -80,15 +93,13 @@ export function updateDeliveryOption(productId, deliveryOptionId) {
 
   matchingItem.deliveryOptionId = deliveryOptionId;
   saveToLocalStorage();
-
 }
 
-export function loadCart(renderProductsGrid) {  //load the products JSON from backend via http 'GET' request
+export function loadCart(renderProductsGrid) {
+  //load the products JSON from backend via http 'GET' request
   const xhr = new XMLHttpRequest(); //create request Object
 
   xhr.addEventListener("load", () => {
-
-    console.log(xhr.response);
     renderProductsGrid(); //we can render the products only after the xhr reponse is loaded.
   });
 
