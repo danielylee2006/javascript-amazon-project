@@ -49,7 +49,7 @@ export function renderOrderSummary() {
                   <span>
                     Quantity: <span class="quantity-label">${quantity}</span>
                   </span>
-                  <span class="update-quantity-link link-primary">
+                  <span class="update-quantity-link link-primary js-update-link" data-product-id="${productId}">
                     Update
                   </span>
                   <span class="delete-quantity-link link-primary
@@ -138,3 +138,10 @@ export function renderOrderSummary() {
     });
   });
 }
+
+documnent.querySelectorAll('.js-update-link').forEach((link) => {
+  link.addEventListener('click', () => {
+    const productId = link.dataset.productId;
+
+  })
+});

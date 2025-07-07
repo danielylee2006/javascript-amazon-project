@@ -32,7 +32,7 @@ export function renderProductsGrid() {
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select class="js-quantity-selector" data-product-id="${product.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -81,11 +81,17 @@ export function renderProductsGrid() {
   document.querySelectorAll(".js-add-to-cart").forEach((button) => {
     button.addEventListener("click", () => {
       const productId = button.dataset.productId;
-      addToCart(productId); //adds product to cart list.
+
+      const selectedQuantity = Number(document.querySelector(`.js-quantity-selector[data-product-id="${productId}"]`).value);
+      console.log(selectedQuantity);
+
+      addToCart(productId,selectedQuantity); //adds product to cart list.
       updateCartQuantity(); //self explanatory
     });
   });
 }
+
+//change event for the selector
 
 //Kebab case --> data-user-id
 //Camel case --> dataset.userId
