@@ -3,14 +3,38 @@ import formatCurrency from "../scripts/utils/money.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
 import {updateCartQuantity} from "./cart.js";
 
-console.log("✅ orders.js loaded on:", window.location.pathname);
-console.log("⛔ orders-grid?", document.querySelector(".orders-grid"));
-
 export const orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+/*
+Orders {
+  id;
+  orderTime;
+  totalCostCents;
+  products {
+    productId;
+    quantity; 
+    estimatedDeliveryTime;
+  }
+}
+*/
+
+console.log(orders);
 
 export function addOrder(order) {
   orders.unshift(order); //add to front of array instead of back
   saveToLocalStorage();
+}
+
+export function getOrder(orderId) {
+
+  let matchingOrder;
+
+  orders.forEach((order) =>{
+    if(order.id === orderId) {
+      matchingOrder = order;
+    }
+  });
+  return matchingOrder;
 }
 
 function saveToLocalStorage() {
@@ -52,7 +76,7 @@ function renderOrder() {
         </div>
 
         <div class="product-actions">
-            <a href="tracking.html">
+            <a href="tracking.html?orderId=${id}&productId=${productId}">
                 <button class="track-package-button button-secondary">
                     Track package
                 </button>
