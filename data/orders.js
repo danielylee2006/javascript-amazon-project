@@ -1,7 +1,7 @@
 import { getProduct, loadProductsFetch } from "./products.js";
 import formatCurrency from "../scripts/utils/money.js";
 import dayjs from "https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js";
-import {updateCartQuantity} from "./cart.js";
+import { updateCartQuantity } from "./cart.js";
 
 export const orders = JSON.parse(localStorage.getItem("orders")) || [];
 
@@ -26,11 +26,10 @@ export function addOrder(order) {
 }
 
 export function getOrder(orderId) {
-
   let matchingOrder;
 
-  orders.forEach((order) =>{
-    if(order.id === orderId) {
+  orders.forEach((order) => {
+    if (order.id === orderId) {
       matchingOrder = order;
     }
   });
@@ -125,10 +124,19 @@ async function loadOrderPage() {
   }
 }
 
-loadOrderPage();
+/*
+Issue: 
+There was a issue in the checkout page's console saying that the document.querySelector(.orders-grid) 
+is null basically saying that the .order-grid element does not exist in the checkout page. 
+But checkout.html doesn't import orders.js?? 
 
+What happened: checkout.html imports checkout.js which imports paymentSummary which imports 
+{addOrder} from order.js. The main problem is that importing addOrder also tells javascript 
+to run the entire order.js function before importing the wanted function. 
 
-
-
-
-
+Solution: only run loadOrderPage(), which access the orders grid element, when the element 
+actually exists.
+*/ 
+if (document.querySelector(".orders-grid")) {
+  loadOrderPage();
+}
